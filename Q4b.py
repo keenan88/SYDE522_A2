@@ -7,9 +7,7 @@ import numpy as np
 import sklearn.cluster
 import sklearn.datasets
 
-
-    
-
+#4B) DONE
 if __name__ == "__main__":
     get_ipython().magic('clear')
     get_ipython().magic('reset -f')
@@ -37,7 +35,7 @@ if __name__ == "__main__":
     value = svm.decision_function(features)
     
     G = 200
-    extent = (-3, 6, -3, 6)
+    extent = (-2.5, 2.5, -2.5, 2.5)
     x_linspace = np.linspace(extent[2],extent[3],G)
     y_linspace = np.linspace(extent[0],extent[1],G)
     radial_space = np.zeros((len(x_linspace), len(y_linspace)))
@@ -61,7 +59,13 @@ if __name__ == "__main__":
     pts = np.vstack([YY.flatten(), XX.flatten(), radial_space.flatten()]).T
     output_pts = svm.decision_function(pts)
     
-    #plt.scatter(x[:, 0], x[:, 1])
+    for point, real_y in zip(x, y):
+        plt.scatter(point[0], point[1], color='red' if real_y == -1 else 'blue')
+    
+    plt.grid()
+    plt.xlabel("x1")
+    plt.ylabel("x2")
+    plt.title("4B) SVM with RBF, Gamma = C = 1")
     
     im = plt.imshow(output_pts.reshape((G,G)).T, 
                     vmin=-1, vmax=1, cmap='RdBu',

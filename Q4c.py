@@ -7,6 +7,8 @@ import numpy as np
 import sklearn.cluster
 import sklearn.datasets
 
+# DONE
+
 def split_train_valid_test(x, y):
     X_train, X_test, Y_train, Y_test = sklearn.model_selection.train_test_split(
         x, 

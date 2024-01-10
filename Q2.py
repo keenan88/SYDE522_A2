@@ -13,16 +13,16 @@ if __name__ == "__main__":
     get_ipython().magic('clear')
     get_ipython().magic('reset -f')
     
-    # A)
+    np.random.seed(4)
     
-    num_starting_clusters = 50
+    # A) [DONE]
     
+    num_starting_clusters = 500
     x, y = sklearn.datasets.make_blobs(
         n_samples = num_starting_clusters, cluster_std=[1,2,0.5], random_state=8
     )
     
     k = 3
-    
     kmeans = sklearn.cluster.KMeans(n_clusters = k)
     kmeans.fit(x)
     output = kmeans.predict(x)
@@ -30,15 +30,16 @@ if __name__ == "__main__":
     color_scale = color_palette = [mcolors.to_rgba(f"C{i}") for i in range(k)]
     
     for classificaiton, point in zip(output, x):
-        
         plt.scatter(point[0], point[1], color=color_scale[classificaiton])
-        
 
     plt.grid()
+    plt.title("2A) SkLearn Clustering, k = 3")
+    plt.xlabel("x1")
+    plt.ylabel("x2")
     plt.show()
     
     
-    #B)
+    #B) [DONE]
     
     digits = sklearn.datasets.load_digits()
     x = digits.data
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     
     """
     
-    #C)
+    #C) [DONE]
     
     agglom = sklearn.cluster.AgglomerativeClustering(n_clusters=10)
     agglom.fit(digits.data)
@@ -101,7 +102,7 @@ if __name__ == "__main__":
     """
     THe agglom clustering is more accurate than the k-means clustering,
     but still has a few mistakes. 2's and 8's, and 3's and 9's still get
-    confused.
+    confused. Essentially, numbers with similar visual features still get mixed up.
     
     """
     

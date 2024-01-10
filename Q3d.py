@@ -13,7 +13,7 @@ if __name__ == "__main__":
     
     np.random.seed(4)
     
-    #3C)
+    #D)
     
     x, y = sklearn.datasets.make_circles(n_samples=100,
                                         shuffle=True,
@@ -22,9 +22,13 @@ if __name__ == "__main__":
                                         factor=0.3)
     y[y==0] = -1
     
-    features = x
+    features = np.zeros((x.shape[0], x.shape[1] + 1))
+    features[:, :2] = x[:, :2]
+    
+    for i in range(len(features)):
+        features[i][2] = np.linalg.norm(features[i])
 
-    """
+    """    
     plt.scatter(x[:, 0], x[:, 1])
     plt.grid()
     plt.xlabel("x1")
@@ -36,9 +40,9 @@ if __name__ == "__main__":
     """
     
     alpha = 0.1
-    lambda_ = 0.001
+    lambda_ = 0.001 # This value of lambda is not strong enough to seperate the data, use lambda = 15 for decent results
 #    lambda_ = 15
-    weights = [0, 0]
+    weights = [0, 0, 0]
     weight_mags = []
     weight_idxs = []
     b = 0
@@ -73,7 +77,7 @@ if __name__ == "__main__":
     plt.ylabel('$x_2$')
     plt.xlim([-1.5, 1.5])
     plt.ylim([-1.5, 1.5])
-    plt.title("3C) SVM: Alpha =" + str(alpha) + ", lambda =" + str(lambda_) + ", 200 iterations")
+    plt.title("3D) SVM: Alpha, lambda, x iterations")
     plt.grid()
     plt.show()
     
@@ -82,7 +86,8 @@ if __name__ == "__main__":
     plt.grid()
     plt.xlabel("Number of Iterations of whole dataset")
     plt.ylabel("Magnitude of weights")
-    plt.title("3C) Weight magnitude vs learning iterations on whole dataset")
+    plt.title("Weight magnitude vs learning iterations on whole dataset")
     plt.show()
     """
+    
     

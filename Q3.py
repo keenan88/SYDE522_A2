@@ -18,18 +18,18 @@ def do_plot(x, weights, b):
     
     plt.xlabel('$x_1$')
     plt.ylabel('$x_2$')
-    plt.title("3A) SVM: Alpha, lambda, x iterations")
+    plt.title("3A) SVM: Alpha = 0.01, lambda = 0.001, 200 iterations")
     plt.grid()
     
     boundary_x  = np.linspace(-3, 6, 100)
     boundary_y = -(weights[0] * boundary_x + b) / weights[1]
     plt.plot(boundary_x, boundary_y, label='Line', color='grey')
     
-#            boundary_y = -(weights[0] * boundary_x + b) / weights[1] + 1
-#            plt.plot(boundary_x, boundary_y, label='Line', color='purple')
-    
-#            boundary_y = -(weights[0] * boundary_x + b) / weights[1] - 1
-#            plt.plot(boundary_x, boundary_y, label='Line', color='blue')
+    boundary_y = -(weights[0] * boundary_x + b) / weights[1] + 1
+    plt.plot(boundary_x, boundary_y, label='Line', color='purple')
+
+    boundary_y = -(weights[0] * boundary_x + b) / weights[1] - 1
+    plt.plot(boundary_x, boundary_y, label='Line', color='blue')
     
     plt.xlim(-3, 6)
     plt.ylim(-3, 6)
@@ -53,49 +53,43 @@ if __name__ == "__main__":
     
     
     alpha = 0.01
-    lambda_ = 0.01
+    lambda_ = 0.001 # This value of lambda leaves a lot of data poorly categorized, use lambda = 10 for better results.
+#    lambda_ = 10
     weights = [0, 0]
     weight_mags = []
     weight_idxs = []
     b = 0
     
-    # Why isnt this convering to the same example shown in slides?
-    for i in range(5):
-        #print(i)
+    for i in range(200):
+        print(i)
         
         for point, real_y in zip(x, y):
                 
             model_y = np.dot(weights, point) + b
             
-            is_support_vector = (model_y >= -1 and real_y == -1)
-            is_support_vector |= (model_y < 1 and real_y == 1)
-            
-            print(point, is_support_vector)
-            
-            if is_support_vector:
-                # Vector is within margin, need to update bias and weights
+            if model_y * real_y > 1:
+                weights += -np.dot(alpha, weights)
+                
+            else:
                 weights += -np.dot(alpha, weights)
                 weights += alpha * lambda_ * real_y * point
                 b += alpha * lambda_ * real_y
-                
-                #do_plot(x, weights, b)
-                
-            else:
-                pass
-                # Vector is outside margin, just try to minimize weights
-                #weights += -np.dot(alpha, weights)
         
-            
-            
-        #print(weights, b)
         weight_mags.append(np.linalg.norm(weights))
         weight_idxs.append(i)
     
+    do_plot(x, weights, b)
+    
+    print("3A) Weights: ", weights, "b ", b)
         
+    #3B) DONE
     plt.scatter(weight_idxs, weight_mags)
     plt.grid()
     plt.xlabel("Number of Iterations of whole dataset")
     plt.ylabel("Magnitude of weights")
-    plt.title("Weight magnitude vs learning iterations on whole dataset")
-    
+    plt.title("3B) Weight magnitude vs learning iterations on whole dataset")
     plt.show()
+    
+    print("Yes, the weights do converge")
+    
+   
